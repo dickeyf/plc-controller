@@ -1,0 +1,30 @@
+plugins {
+    // The one version to change to upgrade Spring Boot
+    id 'org.springframework.boot' version '1.5.4.RELEASE'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-configuration-processor")
+    runtime("org.hsqldb:hsqldb")
+
+    compile("com.digitalpetri.modbus:modbus-master-tcp:1.1.0")
+}
+
+jar {
+    baseName = project.artifact
+    version = "${project.versionMajor}.${project.versionMinor}.${project.versionPatch}"
+}
+
