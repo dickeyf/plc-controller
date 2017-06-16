@@ -7,7 +7,6 @@ public class FloatRegister extends Register<Float> {
 
     public FloatRegister() {
         super();
-
     }
 
     public FloatRegister(long id, String description, int modbusAddress) {

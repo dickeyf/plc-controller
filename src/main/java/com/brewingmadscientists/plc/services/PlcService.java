@@ -3,10 +3,14 @@ package com.brewingmadscientists.plc.services;
 import com.brewingmadscientists.plc.config.model.PlcClientConfig;
 import com.digitalpetri.modbus.master.ModbusTcpMaster;
 import com.digitalpetri.modbus.master.ModbusTcpMasterConfig;
+import com.digitalpetri.modbus.requests.ReadCoilsRequest;
 import com.digitalpetri.modbus.requests.ReadHoldingRegistersRequest;
 import com.digitalpetri.modbus.requests.WriteMultipleRegistersRequest;
+import com.digitalpetri.modbus.requests.WriteSingleCoilRequest;
+import com.digitalpetri.modbus.responses.ReadCoilsResponse;
 import com.digitalpetri.modbus.responses.ReadHoldingRegistersResponse;
 import com.digitalpetri.modbus.responses.WriteMultipleRegistersResponse;
+import com.digitalpetri.modbus.responses.WriteSingleCoilResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.ReferenceCountUtil;
 import org.apache.commons.logging.Log;
@@ -77,5 +81,18 @@ public class PlcService {
         ReferenceCountUtil.release(response);
 
         return byteBuffer.getFloat(0);
+    }
+
+    public boolean readBit(int modBusAddress) {
+        CompletableFuture<ReadCoilsResponse> future =
+                master.sendRequest(new ReadCoilsRequest(modBusAddress, 1), 1);
+        ReadCoilsResponse response = future.join();
+        return response.getCoilStatus().getBoolean(0);
+    }
+
+    public void writeBit(int modBusAddress, boolean value) {
+        CompletableFuture<WriteSingleCoilResponse> future =
+                master.sendRequest(new WriteSingleCoilRequest(modBusAddress, value), 1);
+        future.join();
     }
 }

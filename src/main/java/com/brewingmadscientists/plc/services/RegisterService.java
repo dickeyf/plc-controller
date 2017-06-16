@@ -1,5 +1,6 @@
 package com.brewingmadscientists.plc.services;
 
+import com.brewingmadscientists.plc.model.BitRegister;
 import com.brewingmadscientists.plc.model.FloatRegister;
 import com.brewingmadscientists.plc.model.Register;
 import com.brewingmadscientists.plc.repositories.RegisterRepository;
@@ -30,10 +31,21 @@ public class RegisterService {
         createFloatRegister("Fermenter Coolant Chiller Cutoff", 0x70CA);
         createFloatRegister("Fermenter Coolant Pump Start Temperature", 0x718E);
         createFloatRegister("Fermenter Coolant Pump Stop Temperature", 0x7190);
+        createBitRegister("Fermenter Temperature System Powered", 0x4000);
+        createBitRegister("12V power supply powered", 0x2000);
+        createBitRegister("Coolant chiller powered", 0x2001);
+        createBitRegister( "Fermenter coolant pump powered", 0x2040);
     }
 
     public void createFloatRegister(String description, int modbusAddress) {
         Register register = new FloatRegister(nextId, description, modbusAddress);
+        beanFactory.autowireBean(register);
+        registers.put(nextId, register);
+        nextId ++;
+    }
+
+    public void createBitRegister(String description, int modbusAddress) {
+        Register register = new BitRegister(nextId, description, modbusAddress);
         beanFactory.autowireBean(register);
         registers.put(nextId, register);
         nextId ++;
