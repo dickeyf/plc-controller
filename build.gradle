@@ -18,7 +18,10 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-configuration-processor")
+    compile("org.mapstruct:mapstruct:1.2.0.Final")
+    compile("org.projectlombok:lombok")
     runtime("org.hsqldb:hsqldb")
+    runtime("mysql:mysql-connector-java")
 
     compile("com.digitalpetri.modbus:modbus-master-tcp:1.1.0")
 }
@@ -27,4 +30,3 @@ jar {
     baseName = project.artifact
     version = "${project.versionMajor}.${project.versionMinor}.${project.versionPatch}"
 }
-

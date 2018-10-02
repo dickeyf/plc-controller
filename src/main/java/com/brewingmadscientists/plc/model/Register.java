@@ -12,14 +12,10 @@ import javax.persistence.Transient;
 /**
  * Created by fdickey on 2017-06-15.
  */
-@Entity
-@Table(name = "plc_registers")
 public abstract class Register<T> {
     @Autowired
-    @Transient
     private PlcService plcService;
 
-    @Id
     private long id;
     private String description;
     private int modbusAddress;
