@@ -1,4 +1,4 @@
-package com.brewingmadscientists.plc.model;
+package com.brewingmadscientists.plc.model.modbus;
 
 /**
  * Created by fdickey on 2017-06-15.
@@ -9,8 +9,9 @@ public class BitRegister extends Register<Boolean> {
         super();
     }
 
-    public BitRegister(long id, String description, int modbusAddress) {
-        super(id, description, modbusAddress);
+    public BitRegister(String plcAddress, String modbusAddress, String nickname)
+    {
+        super(plcAddress, modbusAddress, nickname);
     }
 
     public Class<Boolean> getClazz() {

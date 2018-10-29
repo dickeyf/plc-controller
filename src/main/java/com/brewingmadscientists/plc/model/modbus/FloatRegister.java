@@ -1,4 +1,4 @@
-package com.brewingmadscientists.plc.model;
+package com.brewingmadscientists.plc.model.modbus;
 
 /**
  * Created by fdickey on 2017-06-13.
@@ -9,8 +9,8 @@ public class FloatRegister extends Register<Float> {
         super();
     }
 
-    public FloatRegister(long id, String description, int modbusAddress) {
-        super(id, description, modbusAddress);
+    public FloatRegister(String plcAddress, String modbusAddress, String nickname) {
+        super(plcAddress, modbusAddress, nickname);
     }
 
     public Class<Float> getClazz() {

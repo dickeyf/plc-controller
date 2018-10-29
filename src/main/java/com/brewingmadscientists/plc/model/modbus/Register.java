@@ -1,4 +1,4 @@
-package com.brewingmadscientists.plc.model;
+package com.brewingmadscientists.plc.model.modbus;
 
 import com.brewingmadscientists.plc.services.PlcService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,40 +16,23 @@ public abstract class Register<T> {
     @Autowired
     private PlcService plcService;
 
-    private long id;
-    private String description;
+    private String plcAddress;
     private int modbusAddress;
+    private String nickname;
 
     Register() {
-        setId(0);
-        setDescription(null);
         setModbusAddress(0);
     }
 
-    Register(long id, String description, int modbusAddress) {
-        this.setId(id);
-        this.setDescription(description);
-        this.setModbusAddress(modbusAddress);
+    Register(String plcAddress, String modbusAddress, String nickname) {
+        String hexAddress = modbusAddress.subSequence(0, modbusAddress.length()-1).toString();
+        this.plcAddress = plcAddress;
+        this.setModbusAddress(Integer.parseInt(hexAddress, 16));
+        this.nickname = nickname;
     }
 
     public String toString() {
-        return String.format("%s (%s @ %x)", description, this.getClass().getSimpleName(), modbusAddress);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+        return String.format("%s @ %x", this.getClass().getSimpleName(), modbusAddress);
     }
 
     public int getModbusAddress() {
@@ -70,4 +53,20 @@ public abstract class Register<T> {
     @JsonIgnore
     abstract public T getValue();
     abstract public void setValue(String value);
+
+    public String getPlcAddress() {
+        return plcAddress;
+    }
+
+    public void setPlcAddress(String plcAddress) {
+        this.plcAddress = plcAddress;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

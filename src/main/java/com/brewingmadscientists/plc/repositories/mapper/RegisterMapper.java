@@ -1,32 +1,27 @@
 package com.brewingmadscientists.plc.repositories.mapper;
 
-import com.brewingmadscientists.plc.model.BitRegister;
-import com.brewingmadscientists.plc.model.FloatRegister;
-import com.brewingmadscientists.plc.model.Register;
+import com.brewingmadscientists.plc.model.modbus.BitRegister;
+import com.brewingmadscientists.plc.model.modbus.FloatRegister;
+import com.brewingmadscientists.plc.model.modbus.IntRegister;
+import com.brewingmadscientists.plc.model.modbus.Register;
 import com.brewingmadscientists.plc.repositories.RegisterEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RegisterMapper {
-    Register map(RegisterEntity source) {
-        Register register = null;
-
+    public Register map(RegisterEntity source) {
         switch (source.getType()) {
-            case "Boolean": {
-                register = new BitRegister(source.getId(), source.getDescription(), source.getModbusAddress());
+            case "BIT": {
+                return new BitRegister(source.getPlcAddress(), source.getModbusAddress(), source.getNickName());
             }
-            case "Float": {
-                register = new FloatRegister(source.getId(), source.getDescription(), source.getModbusAddress());
+            case "FLOAT": {
+                return new FloatRegister(source.getPlcAddress(), source.getModbusAddress(), source.getNickName());
+            }
+            case "INT": {
+                return new IntRegister(source.getPlcAddress(), source.getModbusAddress(), source.getNickName());
             }
         }
 
-        return register;
-    }
-
-    RegisterEntity map(Register register) {
-        RegisterEntity registerEntity = new RegisterEntity();
-        registerEntity.setId(register.getId());
-        registerEntity.setDescription(register.getDescription());
-        registerEntity.setModbusAddress(register.getModbusAddress());
-        registerEntity.setType(register.getClazz().getSimpleName());
-        return registerEntity;
+        return null;
     }
 }

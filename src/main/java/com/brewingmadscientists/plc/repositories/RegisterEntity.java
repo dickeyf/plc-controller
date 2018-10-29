@@ -1,5 +1,6 @@
 package com.brewingmadscientists.plc.repositories;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -15,8 +16,21 @@ import javax.persistence.Table;
 @Table(name = "plc_registers")
 public class RegisterEntity {
     @Id
-    private long id;
+    @JsonProperty("Address")
+    private String plcAddress;
+    @JsonProperty("Modbus Address")
+    private String modbusAddress;
+    @JsonProperty("Address Comment")
     private String description;
-    private int modbusAddress;
+    @JsonProperty("Data Type")
     private String type;
+    @JsonProperty("Function Code")
+    private String functionCode;
+    @JsonProperty("Nickname")
+    private String nickName;
+    @JsonProperty("Initial Value")
+    private String initialValue;
+    @JsonProperty("Retentive")
+    private String retentive;
+
 }

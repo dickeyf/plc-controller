@@ -2,6 +2,10 @@ plc:
   address: 192.168.0.9
   port: 502
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
       url: jdbc:mysql://192.168.0.5:3306/plcdb?useSSL=false
       username: plc

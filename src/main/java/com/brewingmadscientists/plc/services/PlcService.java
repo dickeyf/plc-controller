@@ -49,6 +49,35 @@ public class PlcService {
         logger.info("Connected to " + tcpMasterConfig.getAddress() + ":" + tcpMasterConfig.getPort());
     }
 
+    public void writeInt(int modBusAddress, int value) {
+        byte[] array = new byte[2];
+
+        array[1] = (byte)(value & 0xff);
+        array[0] = (byte)((value >> 8) & 0xff);
+
+        CompletableFuture<WriteMultipleRegistersResponse> future =
+                master.sendRequest(new WriteMultipleRegistersRequest(modBusAddress, 1, array), 1);
+
+        WriteMultipleRegistersResponse response = future.join();
+    }
+
+    public int readInt(int modBusAddress) {
+        CompletableFuture<ReadHoldingRegistersResponse> future =
+                master.sendRequest(new ReadHoldingRegistersRequest(modBusAddress, 1), 1);
+
+        ReadHoldingRegistersResponse response = future.join();
+
+        ByteBuf buffer = response.getRegisters();
+
+        //Swap both 16-bits registers to correct endianness
+        ByteBuffer byteBuffer = ByteBuffer.allocate(4);
+        byteBuffer.putShort(2, buffer.getShort(0));
+        byteBuffer.putShort(0, (short)0);
+        ReferenceCountUtil.release(response);
+
+        return byteBuffer.getInt(0);
+    }
+
     public void writeFloat(int modBusAddress, float value) {
         int bits = Float.floatToIntBits(value);
 
@@ -87,6 +116,7 @@ public class PlcService {
         CompletableFuture<ReadCoilsResponse> future =
                 master.sendRequest(new ReadCoilsRequest(modBusAddress, 1), 1);
         ReadCoilsResponse response = future.join();
+
         return response.getCoilStatus().getBoolean(0);
     }
 
