@@ -20,19 +20,19 @@ public class ComponentController {
 
     private static final Log logger = LogFactory.getLog(PlcService.class);
 
-    @RequestMapping(value = "/api/v0/components", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v0/plc/components", method = RequestMethod.GET)
     @ResponseBody
     public List<Component> getComponents() {
         return componentService.getComponents();
     }
 
-    @RequestMapping(value = "/api/v0/components/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v0/plc/components/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Component getComponent(@PathVariable("id") String id) {
         return componentService.getComponent(id);
     }
 
-    @RequestMapping(value = "/api/v0/controls/{id}/value", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/v0/plc/controls/{id}/value", method = RequestMethod.PUT)
     @ResponseBody
     public Control setControlValue(@PathVariable("id") String id, @RequestBody String value) {
         Control control = componentService.getControl(id);

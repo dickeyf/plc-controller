@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: plc-controller-service
+spec:
+  selector:
+    app: plc-controller
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plc-controller
+  labels:
+    app: plc-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plc-controller
+  template:
+    metadata:
+      labels:
+        app: plc-controller
+    spec:
+      imagePullSecrets:
+        - name: pipeline-docker-registry
+      containers:
+        - name: maven
+          image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+          ports:
+            - containerPort: 8080

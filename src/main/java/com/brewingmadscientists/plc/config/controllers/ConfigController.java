@@ -10,7 +10,7 @@ public class ConfigController {
     @Autowired
     private ConfigService configService;
 
-    @RequestMapping("/config")
+    @RequestMapping("/api/v0/plc/config")
     @ResponseBody
     Config config() {
         return configService.getAppConfig();

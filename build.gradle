@@ -1,17 +1,32 @@
 plugins {
     // The one version to change to upgrade Spring Boot
-    id 'org.springframework.boot' version '1.5.4.RELEASE'
+    id 'org.springframework.boot' version '2.0.6.RELEASE'
+    id 'com.palantir.docker' version '0.20.1'
+    id 'io.franzbecker.gradle-lombok' version '1.14'
+    id 'java'
 }
+
+apply plugin: "org.springframework.boot"
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-
 repositories {
     mavenCentral()
+}
+
+lombok {
+    version = '1.18.2'
+    sha256 = ""
+}
+
+springBoot {
+    mainClassName = "com.brewingmadscientists.plc.Application"
 }
 
 dependencies {
@@ -29,6 +44,20 @@ dependencies {
 }
 
 jar {
+    mainClassName = "com.brewingmadscientists.plc.Application"
     baseName = project.artifact
     version = "${project.versionMajor}.${project.versionMinor}.${project.versionPatch}"
+}
+
+bootJar {
+    baseName = project.artifact
+    version = "${project.versionMajor}.${project.versionMinor}.${project.versionPatch}"
+}
+
+docker {
+    name "dickeyf/plc-controller:${project.versionMajor}.${project.versionMinor}.${project.versionPatch}"
+    tags 'latest'
+    dependsOn build
+    files bootJar
+    buildArgs([JAR_NAME: "${project.artifact}-${project.versionMajor}.${project.versionMinor}.${project.versionPatch}"])
 }

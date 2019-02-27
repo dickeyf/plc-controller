@@ -26,31 +26,31 @@ public class RegisterController {
 
     private static final Log logger = LogFactory.getLog(PlcService.class);
 
-    @RequestMapping(value = "/api/v0/registers", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v0/plc/registers", method = RequestMethod.GET)
     @ResponseBody
     Collection<Register> registers() {
         return registerService.getRegisters().values();
     }
 
-    @RequestMapping("/api/v0/registers/{id}")
+    @RequestMapping("/api/v0/plc/registers/{id}")
     @ResponseBody
     Register getRegister(@PathVariable("id") String id) {
         return registerService.getRegister(id);
     }
 
-    @RequestMapping("/api/v0/registers/{id}/value")
+    @RequestMapping("/api/v0/plc/registers/{id}/value")
     @ResponseBody
     Object getRegisterValue(@PathVariable("id") String id) {
         return registerService.getRegister(id).getValue();
     }
 
-    @RequestMapping(value = "/api/v0/registers/{id}/value",method = RequestMethod.POST, consumes = "text/plain")
+    @RequestMapping(value = "/api/v0/plc/registers/{id}/value",method = RequestMethod.POST, consumes = "text/plain")
     @ResponseBody
     void setRegisterValue(@PathVariable("id") String id, @RequestBody String value) {
         registerService.getRegister(id).setValue(value);
     }
 
-    @PostMapping("/api/v0/registers")
+    @PostMapping("/api/v0/plc/registers")
     @ResponseBody
     void processRegisterList(@RequestParam("data") MultipartFile file) {
         try {
