@@ -2,9 +2,9 @@ stages:
   - name: Build
     steps:
       - runScriptConfig:
-          image: maven:3-jdk-7
+          image: gradle:5.2.1-jre8-alpine
           shellScript: |-
-            mvn clean install
+            gradle clean assemble
   - name: Publish
     steps:
       - publishImageConfig:
